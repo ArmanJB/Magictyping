@@ -1,0 +1,18 @@
+#main-toolbar #activity-button {
+  background-image: url(../activity/activity-icon.svg);
+}
+
+#canvas{
+	width: 100%;
+	text-align: center;
+	background-color: #282828;
+}
+
+#gameCanvas{
+	/*background-image: url("../src/img/space.png");
+	background-image: url("../src/img/space.png");*/
+	border-color: #000080;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 15px;
+}
