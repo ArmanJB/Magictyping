@@ -16,3 +16,21 @@
 	border-width: 1px;
 	border-radius: 15px;
 }
+
+/***********************************************************/
+body{
+	margin: 0px;
+	text-align: center;
+	background-color: #282828;
+}
+#escena{
+	margin: auto;
+	margin-top: 10px;
+	background-image: url("../src/img/inicio.png");
+	background-size: 1100px 650px;
+	width: 1100px;
+	height: 650px;
+}
+.hide{
+	display: none;
+}
