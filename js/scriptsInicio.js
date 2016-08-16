@@ -24,7 +24,10 @@
 		createjs.Ticker.addEventListener("tick", refresh);
 	}
 
-	function refresh(){stage.update(); }
+	function refresh(){
+		updateTeclado();
+		stage.update(); 
+	}
 
 	function initGraphics(){
 		createBgArea();
@@ -286,34 +289,95 @@
 		var esc = new createjs.Bitmap('src/img/escenario.png');
 		esc.x = 0; esc.y = 50;
 		stage.addChild(esc);
-		createGameBar();
+
+		var mago = new createjs.Bitmap('src/img/mago.png');
+		mago.x = 185;
+		mago.y = 140;
+		mago.scaleX = 0.35; mago.scaleY = 0.35;
+		stage.addChild(mago);
+
+		createGameBar(nivel);
 	}
 
-	function createGameBar(){
+	function createGameBar(nivel){
 		gameBar = new createjs.Container();
 		gameBar.setBounds(0,0,1100,50);
 		gameBar.x = 0;
 		gameBar.y = 0;
 
-		gameBar.addChild(createFondoBar() );
+		var fondoBar = new createjs.Shape();
+		fondoBar.graphics
+			.setStrokeStyle(3)
+			.beginStroke("#000080")
+			.beginFill("#323a72")
+			.drawRoundRectComplex(0,0,1100,60,15,15,0,0);
+		gameBar.addChild(fondoBar);
 
-		/*gameLetrasInfo = createLetrasInfo(gameBar, game);
-		gameLetras = createLetras(gameBar, game);
-		for (var i = 0; i < game.length; i++) {
-			gameBar.addChild(gameLetrasInfo[i]);
-			gameBar.addChild(gameLetras[i]);
-		};*/
-		gameBar.addChild(createDañoLabel() );
-		gameBar.addChild(createDañoFondo() );
+		var daño = new createjs.Text("Fortaleza: ", "20px Arial", "white");
+		daño.textBaseLine = "top";
+		daño.x = 710;
+		daño.y = 20;
+		gameBar.addChild(daño);
+
+		var dañoFondo = new createjs.Shape();
+		dañoFondo.graphics
+			.beginFill("black")
+			.drawRoundRect(810,23,225,18,8);
+		gameBar.addChild(dañoFondo);
 		
 		var dañoNivel = new createjs.Shape();
 		dañoNivel.graphics
 			.beginFill("red")
 			.drawRoundRectComplex(811,25,223,14,7,7,7,7);
-
 		gameBar.addChild(dañoNivel);
 
+		/************************************/
+		var conjunto = palabras(nivel);
+		var palabra = conjunto[Math.floor(Math.random()*conjunto.length)];
+		console.log(palabra);
+
+		var posX = 50;
+		for (var i = 0; i < palabra.length; i++) {
+			var info = new createjs.Text(palabra[i], "45px Arial", "white");
+			info.textBaseLine = "top";
+			info.x = posX + 35;
+			info.y = 15;
+			gameBar.addChild(info);
+
+			posX = info.x;
+		}
+
+		var posX = 50;
+		for (var i = 0; i < palabra.length; i++) {
+			var info = new createjs.Text(palabra[i], "45px Arial", "skyblue");
+			info.textBaseLine = "top";
+			info.x = posX + 35;
+			info.y = 15;
+			gameBar.addChild(info);
+
+			posX = info.x;
+		};
+
 		stage.addChild(gameBar);
+	}
+
+	function updateTeclado(){
+		/*if (keyManager.isKeyPressed(KeyboardManager.LEFT_KEY)) {
+			nave.x -= 10;
+			if (nave.x < 0) {nave.x = 0};
+		};
+		if (keyManager.isKeyPressed(KeyboardManager.RIGHT_KEY)) {
+			nave.x += 10;
+			if (nave.x > stage.canvas.width - 117) {nave.x = stage.canvas.width - 117};
+		};
+		if (keyManager.isKeyPressed(KeyboardManager.UP_KEY)) {
+			nave.y -= 10;
+			if (nave.y < 60) {nave.y = 60};	//gameBar
+		};
+		if (keyManager.isKeyPressed(KeyboardManager.DOWN_KEY)) {
+			nave.y += 10;
+			if (nave.y > stage.canvas.height - 48) {nave.y = stage.canvas.height - 48};
+		};*/
 	}
 
 
