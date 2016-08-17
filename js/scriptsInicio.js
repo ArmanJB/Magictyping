@@ -1,4 +1,7 @@
 (function(){
+	var teclado = null;
+	var keyManager = null;
+
 	var	stage = null;
 	var bgArea = null;
 	var skyArea = null;
@@ -14,6 +17,9 @@
 	function Create(canvas){
 		stage = new createjs.Stage(canvas);
 		stage.enableMouseOver(30);
+
+		keyManager = new KeyboardManager();
+		teclado = keyManager.getTeclado();
 		init();
 	}
 
@@ -362,22 +368,12 @@
 	}
 
 	function updateTeclado(){
-		/*if (keyManager.isKeyPressed(KeyboardManager.LEFT_KEY)) {
-			nave.x -= 10;
-			if (nave.x < 0) {nave.x = 0};
-		};
-		if (keyManager.isKeyPressed(KeyboardManager.RIGHT_KEY)) {
-			nave.x += 10;
-			if (nave.x > stage.canvas.width - 117) {nave.x = stage.canvas.width - 117};
-		};
-		if (keyManager.isKeyPressed(KeyboardManager.UP_KEY)) {
-			nave.y -= 10;
-			if (nave.y < 60) {nave.y = 60};	//gameBar
-		};
-		if (keyManager.isKeyPressed(KeyboardManager.DOWN_KEY)) {
-			nave.y += 10;
-			if (nave.y > stage.canvas.height - 48) {nave.y = stage.canvas.height - 48};
-		};*/
+		teclado.forEach(function(item){
+			if (keyManager.isKeyPressed(item)) {
+				//window.alert(item)
+				window.alert(keyManager.getKey(item))
+			};
+		});
 	}
 
 

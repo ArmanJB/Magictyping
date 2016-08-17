@@ -51,3 +51,25 @@ KeyboardManager.prototype.removeKeyFromMap = function(e){
 KeyboardManager.prototype.isKeyPressed = function(key){
 	return	this.keyMap[key];
 }
+
+KeyboardManager.prototype.getTeclado = function() {
+	return [KeyboardManager.A_Key, KeyboardManager.B_Key, KeyboardManager.C_Key, KeyboardManager.D_Key,
+			KeyboardManager.E_Key, KeyboardManager.F_Key, KeyboardManager.G_Key, KeyboardManager.H_Key, 
+			KeyboardManager.I_Key, KeyboardManager.J_Key, KeyboardManager.K_Key, KeyboardManager.L_Key,
+			KeyboardManager.M_Key, KeyboardManager.N_Key, KeyboardManager.O_Key, KeyboardManager.P_Key,
+			KeyboardManager.Q_Key, KeyboardManager.R_Key, KeyboardManager.S_Key, KeyboardManager.T_Key,
+			KeyboardManager.U_Key, KeyboardManager.V_Key, KeyboardManager.W_Key, KeyboardManager.X_Key,
+			KeyboardManager.Y_Key, KeyboardManager.Z_Key
+	];
+}
+
+KeyboardManager.prototype.getKey = function(item){
+	var letters = ['A', 'B', 'C', 'D','E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M', 'N', 'O', 'P','Q', 'R', 'S', 'T','U', 'V', 'W', 'X','Y', 'Z'];
+	var keys = this.getTeclado();
+	var merge = [];
+	keys.forEach(function(itm, index){
+		merge[itm] = letters[index];
+	});
+
+	return merge[item];
+}
