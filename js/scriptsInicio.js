@@ -351,7 +351,7 @@
 		/************************************/
 		var conjunto = palabras(nivelActual);
 		palabra = conjunto[Math.floor(Math.random()*conjunto.length)];
-		console.log(palabra);
+		//console.log(palabra);
 
 		var posX = 50;
 		for (var i = 0; i < palabra.length; i++) {
@@ -382,15 +382,16 @@
 		if (palabra!=null) {
 			teclado.forEach(function(item){
 				if (keyManager.isKeyPressed(item)) {
-					//window.alert(item)
-					//window.alert(keyManager.getKey(item))
 					if (keyManager.getKey(item)==palabra[palabraCont]) {
 						palabraGr[palabraCont].visible = false;
 						palabraCont++;
+						console.log(palabraCont+' '+palabra.length);
 					};
 					if (palabra.length == palabraCont) {
 						window.alert('Lo has hecho bien');
 						palabraCont=0;
+						palabra = null;
+						palabraGr = [];
 						createGameBar();
 					};
 					/*gameBar.removeChild(dañoNivel);
