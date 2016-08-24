@@ -14,10 +14,13 @@
 	var nubes = [];
 	var title = null;
 
+	var guiasVar = null;
 	var nivelActual = null;
 	var palabra = null;
 	var palabraGr = [];
 	var palabraCont = 0;
+
+	var ogros = [];
 
 	var gameBar = null;
 	var dañoNivel = null;
@@ -313,6 +316,13 @@
 
 		nivelActual = nivel;
 		createGameBar();
+
+		guiasVar = guias();
+		for (var i = 1; i <= 5; i++) {
+			setTimeout(function(){ 
+				playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
+			}, (i*2500));
+		}
 	}
 
 	function createGameBar(){
@@ -385,25 +395,80 @@
 					if (keyManager.getKey(item)==palabra[palabraCont]) {
 						palabraGr[palabraCont].visible = false;
 						palabraCont++;
-						console.log(palabraCont+' '+palabra.length);
+						//console.log(palabraCont+' '+palabra.length);
 					};
 					if (palabra.length == palabraCont) {
-						window.alert('Lo has hecho bien');
+						//window.alert('Lo has hecho bien');
+						ataque();
 						palabraCont=0;
 						palabra = null;
 						palabraGr = [];
-						createGameBar();
+						createGameBar();	
 					};
-					/*gameBar.removeChild(dañoNivel);
-					dañoNivel = new createjs.Shape();
-					dañoNivel.graphics
-						.beginFill("red")
-						.drawRoundRectComplex(811,25,(dañoVar-7),14,7,7,7,7);
-					gameBar.addChild(dañoNivel);
-					dañoVar=dañoVar-7;*/
 				};
 			});
+			if (dañoVar <= 0) {
+				window.alert('Has perdido!');
+				location.reload();
+			};
 		};
+	}
+
+	function playOgros(guia, i){
+		var ogro = new createjs.Bitmap('src/img/ogro.png');
+		ogro.scaleX = 0.2;ogro.scaleY = 0.2;
+		ogro.x = 1150; ogro.y = guia.y;
+		//var randomtime = 20000+Math.floor(Math.random()*25000);
+
+		ogros.push(ogro);
+		createjs.Tween.get(ogros[i])
+			.to({x:guia.toX, y:guia.toY}, 10000, createjs.Ease.linear)
+			.call(ataqueOgro, [ogros[i]], this)
+
+		stage.addChild(ogros[i]);
+	}
+	function ataqueOgro(ogro){
+		createjs.Tween.get(ogro)
+			.to({y:295},500, createjs.Ease.linear)
+			.to({y:300},500, createjs.Ease.linear)
+			.call(disminuir, [ogro], this);
+	}
+	function disminuir(ogro){
+		gameBar.removeChild(dañoNivel);
+		dañoNivel = new createjs.Shape();
+		dañoNivel.graphics
+			.beginFill("red")
+			.drawRoundRectComplex(811,25,(dañoVar-2),14,7,7,7,7);
+		gameBar.addChild(dañoNivel);
+		dañoVar=dañoVar-2;
+
+		ataqueOgro(ogro);
+	}
+
+	function ataque(){
+		var ogX = ogros[0].x;
+		var ogY = ogros[0].y;
+		createjs.Tween.removeTweens(ogros[0]);
+		ogros[0].visible=false;
+		stage.removeChild(ogros[0])
+		ogros.splice(0,1);
+		playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
+		//
+		var spriteSheet = new createjs.SpriteSheet({
+			images:['src/img/ataques/flamaSprite.png'],
+			frames: {width:180, height:220, count:12, regX:0, regY:0},
+			animations: {stand: [0,11,'stand']}
+		});
+		var flamaBebe = new createjs.Sprite(spriteSheet, 'stand');
+		flamaBebe.setBounds(0,0,180,220)
+		flamaBebe.scaleX = 0.3; flamaBebe.scaleY = 0.3;
+		flamaBebe.x = ogX
+		flamaBebe.y = ogY;
+		stage.addChild(flamaBebe);
+
+		setTimeout(function(){
+			stage.removeChild(flamaBebe);
+		}, 5000);
 	}
 
 
