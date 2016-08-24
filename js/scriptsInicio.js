@@ -14,6 +14,15 @@
 	var nubes = [];
 	var title = null;
 
+	var nivelActual = null;
+	var palabra = null;
+	var palabraGr = [];
+	var palabraCont = 0;
+
+	var gameBar = null;
+	var dañoNivel = null;
+	var dañoVar = 223;
+
 	function Create(canvas){
 		stage = new createjs.Stage(canvas);
 		stage.enableMouseOver(30);
@@ -302,10 +311,12 @@
 		mago.scaleX = 0.35; mago.scaleY = 0.35;
 		stage.addChild(mago);
 
-		createGameBar(nivel);
+		nivelActual = nivel;
+		createGameBar();
 	}
 
-	function createGameBar(nivel){
+	function createGameBar(){
+		if (gameBar!=null) {gameBar.removeAllChildren();};
 		gameBar = new createjs.Container();
 		gameBar.setBounds(0,0,1100,50);
 		gameBar.x = 0;
@@ -331,15 +342,15 @@
 			.drawRoundRect(810,23,225,18,8);
 		gameBar.addChild(dañoFondo);
 		
-		var dañoNivel = new createjs.Shape();
+		dañoNivel = new createjs.Shape();
 		dañoNivel.graphics
 			.beginFill("red")
-			.drawRoundRectComplex(811,25,223,14,7,7,7,7);
+			.drawRoundRectComplex(811,25,dañoVar,14,7,7,7,7);
 		gameBar.addChild(dañoNivel);
 
 		/************************************/
-		var conjunto = palabras(nivel);
-		var palabra = conjunto[Math.floor(Math.random()*conjunto.length)];
+		var conjunto = palabras(nivelActual);
+		palabra = conjunto[Math.floor(Math.random()*conjunto.length)];
 		console.log(palabra);
 
 		var posX = 50;
@@ -355,25 +366,43 @@
 
 		var posX = 50;
 		for (var i = 0; i < palabra.length; i++) {
-			var info = new createjs.Text(palabra[i], "45px Arial", "skyblue");
-			info.textBaseLine = "top";
-			info.x = posX + 35;
-			info.y = 15;
-			gameBar.addChild(info);
+			palabraGr[i] = new createjs.Text(palabra[i], "45px Arial", "green");
+			palabraGr[i].textBaseLine = "top";
+			palabraGr[i].x = posX + 35;
+			palabraGr[i].y = 15;
+			gameBar.addChild(palabraGr[i]);
 
-			posX = info.x;
+			posX = palabraGr[i].x;
 		};
 
 		stage.addChild(gameBar);
 	}
 
 	function updateTeclado(){
-		teclado.forEach(function(item){
-			if (keyManager.isKeyPressed(item)) {
-				//window.alert(item)
-				window.alert(keyManager.getKey(item))
-			};
-		});
+		if (palabra!=null) {
+			teclado.forEach(function(item){
+				if (keyManager.isKeyPressed(item)) {
+					//window.alert(item)
+					//window.alert(keyManager.getKey(item))
+					if (keyManager.getKey(item)==palabra[palabraCont]) {
+						palabraGr[palabraCont].visible = false;
+						palabraCont++;
+					};
+					if (palabra.length == palabraCont) {
+						window.alert('Lo has hecho bien');
+						palabraCont=0;
+						createGameBar();
+					};
+					/*gameBar.removeChild(dañoNivel);
+					dañoNivel = new createjs.Shape();
+					dañoNivel.graphics
+						.beginFill("red")
+						.drawRoundRectComplex(811,25,(dañoVar-7),14,7,7,7,7);
+					gameBar.addChild(dañoNivel);
+					dañoVar=dañoVar-7;*/
+				};
+			});
+		};
 	}
 
 
