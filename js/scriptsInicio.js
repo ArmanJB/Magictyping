@@ -20,6 +20,9 @@
 	var palabraGr = [];
 	var palabraCont = 0;
 
+	var contGraf = null;
+	var contador = 0;
+
 	var ogros = [];
 
 	var gameBar = null;
@@ -318,7 +321,7 @@
 		createGameBar();
 
 		guiasVar = guias();
-		for (var i = 1; i <= 5; i++) {
+		for (var i = 1; i <= 8; i++) {
 			setTimeout(function(){ 
 				playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
 			}, (i*2500));
@@ -340,7 +343,19 @@
 			.drawRoundRectComplex(0,0,1100,60,15,15,0,0);
 		gameBar.addChild(fondoBar);
 
-		var daño = new createjs.Text("Fortaleza: ", "20px Arial", "white");
+		var daño = new createjs.Text("Ogros: ", "20px Arial", "white");
+		daño.textBaseLine = "top";
+		daño.x = 580;
+		daño.y = 20;
+		gameBar.addChild(daño);
+
+		contGraf = new createjs.Text(contador, "20px Arial", "white");
+		contGraf.textBaseLine = "top";
+		contGraf.x = 650;
+		contGraf.y = 20;
+		gameBar.addChild(contGraf);
+
+		daño = new createjs.Text("Fortaleza: ", "20px Arial", "white");
 		daño.textBaseLine = "top";
 		daño.x = 710;
 		daño.y = 20;
@@ -408,7 +423,7 @@
 				};
 			});
 			if (dañoVar <= 0) {
-				window.alert('Has perdido!');
+				window.alert('Has perdido!\nTu puntuación maxima fue: '+contador);
 				location.reload();
 			};
 		};
@@ -452,7 +467,18 @@
 		ogros[0].visible=false;
 		stage.removeChild(ogros[0])
 		ogros.splice(0,1);
-		playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
+		//
+		contador++;
+		gameBar.removeChild(contGraf);
+		contGraf = new createjs.Text(contador, "20px Arial", "white");
+		contGraf.textBaseLine = "top";
+		contGraf.x = 650;
+		contGraf.y = 20;
+		gameBar.addChild(contGraf);
+		//
+		setTimeout(function(){
+			playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
+		}, 5000);
 		//
 		var spriteSheet = new createjs.SpriteSheet({
 			images:['src/img/ataques/flamaSprite.png'],
