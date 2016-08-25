@@ -10,7 +10,6 @@
 	var menuArea = null;
 
 	var spriteSheet = null;
-	var nave = null;
 	var nubes = [];
 	var title = null;
 
@@ -23,6 +22,7 @@
 	var contGraf = null;
 	var contador = 0;
 
+	var mago = null;
 	var ogros = [];
 
 	var gameBar = null;
@@ -48,6 +48,28 @@
 	function refresh(){
 		updateTeclado();
 		stage.update(); 
+		if (dañoVar <= 0) {
+			dañoNivel.visible = false;
+			for (var i = 0; i < ogros.length; i++) {
+				createjs.Tween.removeTweens(ogros[i]);
+				stage.removeChild(ogros[i]);
+			};
+			dañoVar = 1;
+			swal({
+					title: 'Buen trabajo!',
+					text: 'Tu puntuación en esta partida fue: <b>'+contador+'</b>',
+					type: 'success',
+					confirmButtonColor: '#8CD4F5',
+					confirmButtonText: 'Jugar nuevamente!',
+					timer: 3000,
+  					showConfirmButton: false,
+  					html: true
+				},
+				function(){
+					location.reload();
+				}
+			);
+		};
 	}
 
 	function initGraphics(){
@@ -311,7 +333,7 @@
 		esc.x = 0; esc.y = 50;
 		stage.addChild(esc);
 
-		var mago = new createjs.Bitmap('src/img/mago.png');
+		mago = new createjs.Bitmap('src/img/mago.png');
 		mago.x = 185;
 		mago.y = 140;
 		mago.scaleX = 0.35; mago.scaleY = 0.35;
@@ -422,10 +444,6 @@
 					};
 				};
 			});
-			if (dañoVar <= 0) {
-				window.alert('Has perdido!\nTu puntuación maxima fue: '+contador);
-				location.reload();
-			};
 		};
 	}
 
@@ -461,6 +479,21 @@
 	}
 
 	function ataque(){
+		stage.removeChild(mago);
+		mago = new createjs.Bitmap('src/img/magoWin.png');
+		mago.x = 185;
+		mago.y = 140;
+		mago.scaleX = 0.35; mago.scaleY = 0.35;
+		stage.addChild(mago);
+		setTimeout(function(){
+			stage.removeChild(mago);
+			mago = new createjs.Bitmap('src/img/mago.png');
+			mago.x = 185;
+			mago.y = 140;
+			mago.scaleX = 0.35; mago.scaleY = 0.35;
+			stage.addChild(mago);
+		}, 250);
+		//
 		var ogX = ogros[0].x;
 		var ogY = ogros[0].y;
 		createjs.Tween.removeTweens(ogros[0]);
