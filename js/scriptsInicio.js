@@ -462,7 +462,8 @@
 		/*
 		var ogro = new createjs.Bitmap('src/img/ogro.png');
 		ogro.scaleX = 0.2;ogro.scaleY = 0.2;
-		ogro.x = 1150; ogro.y = guia.y;*/
+		ogro.x = 1150; ogro.y = guia.y;
+		*/
 
 		ogros.push(ogro);
 		createjs.Tween.get(ogros[i])
@@ -472,9 +473,17 @@
 		stage.addChild(ogros[i]);
 	}
 	function ataqueOgro(ogro){
+		var ogX = ogro.x;
+		var ogY = ogro.y;
+		stage.removeChild(ogro);
+		ogro = new createjs.Bitmap('src/img/ogros/ogro2.png');
+		ogro.scaleX = 0.3;ogro.scaleY = 0.3;
+		ogro.x = ogX; ogro.y = ogY;
+		stage.addChild(ogro);
+
 		createjs.Tween.get(ogro)
-			.to({y:295},500, createjs.Ease.linear)
-			.to({y:300},500, createjs.Ease.linear)
+			.to({y:ogY+5},500, createjs.Ease.linear)
+			.to({y:ogY},500, createjs.Ease.linear)
 			.call(disminuir, [ogro], this);
 	}
 	function disminuir(ogro){
@@ -523,7 +532,7 @@
 		setTimeout(function(){
 			playOgros(guiasVar[Math.floor(Math.random()*guiasVar.length)], ogros.length);
 		}, 5000);
-		//
+		/*
 		var spriteSheet = new createjs.SpriteSheet({
 			images:['src/img/ataques/flamaSprite.png'],
 			frames: {width:180, height:220, count:12, regX:0, regY:0},
@@ -532,6 +541,18 @@
 		var flamaBebe = new createjs.Sprite(spriteSheet, 'stand');
 		flamaBebe.setBounds(0,0,180,220)
 		flamaBebe.scaleX = 0.3; flamaBebe.scaleY = 0.3;
+		flamaBebe.x = ogX
+		flamaBebe.y = ogY;
+		stage.addChild(flamaBebe);
+		*/
+		var spriteSheet = new createjs.SpriteSheet({
+			images:['src/img/ataques/flamaSprite2.png'],
+			frames: {width:50, height:65, count:8, regX:0, regY:0},
+			animations: {stand: [0,7,'reverse'], reverse: [7,0,'stand']}
+		});
+		var flamaBebe = new createjs.Sprite(spriteSheet, 'stand');
+		flamaBebe.setBounds(0,0,50,65)
+		//flamaBebe.scaleX = 0.3; flamaBebe.scaleY = 0.3;
 		flamaBebe.x = ogX
 		flamaBebe.y = ogY;
 		stage.addChild(flamaBebe);
