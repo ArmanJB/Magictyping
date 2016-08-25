@@ -448,10 +448,21 @@
 	}
 
 	function playOgros(guia, i){
+		var spriteSheet = new createjs.SpriteSheet({
+			images:['src/img/ogros/ogroSprite.png'],
+			frames: {width:120, height:200, count:4, regX:0, regY:0},
+			animations: {stand: [0,3,'stand']}
+		});
+		var ogro = new createjs.Sprite(spriteSheet, 'stand');
+		ogro.setBounds(0,0,120,200)
+		ogro.scaleX = 0.3; ogro.scaleY = 0.3;
+		ogro.x = 1150;
+		ogro.y = guia.y;
+		//stage.addChild(ogro);
+		/*
 		var ogro = new createjs.Bitmap('src/img/ogro.png');
 		ogro.scaleX = 0.2;ogro.scaleY = 0.2;
-		ogro.x = 1150; ogro.y = guia.y;
-		//var randomtime = 20000+Math.floor(Math.random()*25000);
+		ogro.x = 1150; ogro.y = guia.y;*/
 
 		ogros.push(ogro);
 		createjs.Tween.get(ogros[i])
