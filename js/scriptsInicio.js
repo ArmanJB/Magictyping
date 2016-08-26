@@ -29,10 +29,13 @@
 	var dañoNivel = null;
 	var dañoVar = 223;
 
-	var soundFinal = 'final';
-	var soundGame = 'game';
-	var soundIntro = 'intro';
-	var soundTrack = 'soundtrack';
+	var soundV = true;
+	var audioPath = "src/sound/";
+    var sounds = [
+        {id:"Final", src:"final.wav"},
+        {id:"Intro", src:"intro.wav"},
+        {id:"Soundtrack", src:"soundtrack.wav"}
+    ];
 
 	function Create(canvas){
 		stage = new createjs.Stage(canvas);
@@ -40,10 +43,6 @@
 
 		keyManager = new KeyboardManager();
 		teclado = keyManager.getTeclado();
-		createjs.Sound.registerSound('src/sound/final.wav', soundFinal);
-		createjs.Sound.registerSound('src/sound/game.wav', soundGame);
-		createjs.Sound.registerSound('src/sound/intro.wav', soundIntro);
-		createjs.Sound.registerSound('src/sound/soundtrack.wav', soundTrack);
 		init();
 	}
 
@@ -52,11 +51,17 @@
 
 		createjs.Ticker.setFPS(30);
 		createjs.Ticker.addEventListener("tick", refresh);
+		//
+	    if (!createjs.Sound.initializeDefaultPlugins()) {return;}
+	    //createjs.Sound.alternateExtensions = ["mp3"];
+	    createjs.Sound.addEventListener("fileload", handleLoad);
+	    createjs.Sound.registerSounds(sounds, audioPath);
 	}
+	function handleLoad(event) {}
 
 	function refresh(){
 		updateTeclado();
-		stage.update(); 
+		stage.update();
 		if (dañoVar <= 0) {
 			dañoNivel.visible = false;
 			for (var i = 0; i < ogros.length; i++) {
@@ -64,6 +69,7 @@
 				stage.removeChild(ogros[i]);
 			};
 			dañoVar = 1;
+			createjs.Sound.play('Final');
 			swal({
 					title: 'Buen trabajo!',
 					text: 'Tu puntuación en esta partida fue: <b>'+contador+'</b>',
@@ -91,8 +97,7 @@
 		//spriteSheet = createSpriteSheet();
 		//nave = createNave(spriteSheet, stage.canvas.width/2, stage.canvas.height/2);
 		//stage.addChild(nave);
-		console.log(soundIntro)
-		createjs.Sound.play(soundIntro);
+		setTimeout(function(){createjs.Sound.play('Intro');}, 1000);
 		setTimeout(function(){ createjs.Tween.get(title).to({x:250,y:30,alpha:1},1000,createjs.Ease.getPowOut(2.5));}, 1500);
 	}
 
@@ -229,6 +234,15 @@
 			bsound.visible = true;
 			esound.visible = false;
 		});
+		bsoundh.addEventListener('click', function(){
+			if (soundV==true) {
+				soundV = false;
+				createjs.Sound.muted = true;
+			}else{
+				soundV = true;
+				createjs.Sound.muted = false;
+			}
+		});
 		var bsound = new createjs.Bitmap('src/img/botones/botonSonidoNatural64x64.png');
 		bsound.x = 700;
 		bsound.y = 520;
@@ -352,6 +366,8 @@
 
 		nivelActual = nivel;
 		createGameBar();
+		createjs.Sound.stop('Intro');
+		createjs.Sound.play('Soundtrack');
 
 		guiasVar = guias();
 		for (var i = 1; i <= 8; i++) {
