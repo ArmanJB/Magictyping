@@ -29,12 +29,21 @@
 	var dañoNivel = null;
 	var dañoVar = 223;
 
+	var soundFinal = 'final';
+	var soundGame = 'game';
+	var soundIntro = 'intro';
+	var soundTrack = 'soundtrack';
+
 	function Create(canvas){
 		stage = new createjs.Stage(canvas);
 		stage.enableMouseOver(30);
 
 		keyManager = new KeyboardManager();
 		teclado = keyManager.getTeclado();
+		createjs.Sound.registerSound('src/sound/final.wav', soundFinal);
+		createjs.Sound.registerSound('src/sound/game.wav', soundGame);
+		createjs.Sound.registerSound('src/sound/intro.wav', soundIntro);
+		createjs.Sound.registerSound('src/sound/soundtrack.wav', soundTrack);
 		init();
 	}
 
@@ -82,6 +91,8 @@
 		//spriteSheet = createSpriteSheet();
 		//nave = createNave(spriteSheet, stage.canvas.width/2, stage.canvas.height/2);
 		//stage.addChild(nave);
+		console.log(soundIntro)
+		createjs.Sound.play(soundIntro);
 		setTimeout(function(){ createjs.Tween.get(title).to({x:250,y:30,alpha:1},1000,createjs.Ease.getPowOut(2.5));}, 1500);
 	}
 
